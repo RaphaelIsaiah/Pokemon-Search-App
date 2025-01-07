@@ -163,6 +163,50 @@ h3 {
   color: var(--color-2);
 }
 
+.outer-sug-container {
+  display: none;
+  background: linear-gradient(60deg, var(--color-4) 20%, var(--color-2) 100%);
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0px 4px 8px var(--color-3);
+  height: 17vh;
+  max-height: min-content;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.suggestions-container {
+  /* background-color: var(--color-2); */
+  height: 100%;
+  overflow-y: scroll;
+  text-align: left;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-3) var(--color-4);
+}
+
+/* Webkit-based browsers (Chrome, Safari, Edge) */
+.suggestions-container::-webkit-scrollbar {
+  width: 0.7rem;
+}
+.suggestions-container::-webkit-scrollbar-track {
+  background-color: var(--color-4);
+  border-radius: 1rem;
+}
+.suggestions-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-3);
+  border-radius: 1rem;
+}
+
+.autocomplete-suggestion {
+  padding: 0.5rem 1.5rem 0.5rem;
+  cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+  /* background-color: var(--color-2); */
+  background: linear-gradient(-60deg, var(--color-4) 20%, var(--color-2) 100%);
+}
+
 /* Pokemon details section */
 .card_section,
 .stats {
@@ -312,8 +356,8 @@ tr:not(:last-child) {
 }
 
 th {
-    text-transform: uppercase;
-    font-weight: bold;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 td,

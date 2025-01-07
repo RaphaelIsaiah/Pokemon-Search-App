@@ -13,8 +13,59 @@ const defense = document.getElementById("defense");
 const specialAttack = document.getElementById("special-attack");
 const specialDefense = document.getElementById("special-defense");
 const speed = document.getElementById("speed");
+const autocompleteList = document.getElementById("autocomplete-list");
+const outerSuggestionContainer = document.getElementById(
+  "outer-suggestion-container"
+);
 const fccProxyApi = "https://pokeapi-proxy.freecodecamp.rocks/api/pokemon/";
 const pokeApiBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
+let pokemonList = [];
+
+// Fetch Pokemon Names and IDs once
+fetch(`${pokeApiBaseUrl}?limit=1118`)
+  .then((res) => res.json())
+  .then((data) => {
+    pokemonList = data.results.map((pokemon, index) => ({
+      name: pokemon.name,
+      id: index + 1,
+    }));
+  });
+
+//  Listen for User's input
+searchInput.addEventListener("input", () => {
+  const inputValue = searchInput.value.toLowerCase();
+  autocompleteList.innerHTML = "";
+
+  if (inputValue) {
+    const filteredList = pokemonList.filter(
+      (pokemon) =>
+        pokemon.name.startsWith(inputValue) ||
+        pokemon.id.toString().startsWith(inputValue)
+    );
+
+    filteredList.forEach((pokemon) => {
+      const suggestionItem = document.createElement("div");
+      outerSuggestionContainer.style.display = "block";
+      autocompleteList.style.display = "block";
+      suggestionItem.classList.add("autocomplete-suggestion");
+      suggestionItem.textContent = `${pokemon.name} (#${pokemon.id})`;
+
+      suggestionItem.addEventListener("click", () => {
+        searchInput.value = pokemon.name;
+        outerSuggestionContainer.style.display = "none";
+      });
+      autocompleteList.appendChild(suggestionItem);
+    });
+  }
+});
+
+// Hide suggestions when clicking outside
+document.addEventListener("click", (e) => {
+  if (!searchInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+    autocompleteList.innerHTML = "";
+    outerSuggestionContainer.style.display = "none";
+  }
+});
 
 // Async function to fetch data from the APIs
 const fetchPokemon = async () => {
@@ -85,6 +136,7 @@ const resetPage = async () => {
     // Display the data
     displayPokemon(fccData, pokeData);
     searchInput.value = "";
+    autocompleteList.style.display = "none";
   } catch (err) {
     console.log(`Error fetching Bulbasaur data: ${err}`);
     alert("Failed to reset to Bulbasaur");
