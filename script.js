@@ -16,16 +16,24 @@ const speed = document.getElementById("speed");
 const fccProxyApi = "https://pokeapi-proxy.freecodecamp.rocks/api/pokemon/";
 const pokeApiBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
 
-// Async function to fetch data from the API
+// Async function to fetch data from the APIs
 const fetchPokemon = async () => {
   try {
     // To enable search by either name or id
     const pokemonNameOrId = searchInput.value.toLowerCase();
-    const res = await fetch(`${fccProxyApi}${pokemonNameOrId}`);
-    const data = await res.json();
-    displayPokemon(data);
-    fetchOfficialArtwork(pokemonNameOrId);
-    // console.log(data.stats[5]);
+
+    // Fetch data from both APIs simultaneously
+    const [fccRes, pokeRes] = await Promise.all([
+      fetch(`${fccProxyApi}${pokemonNameOrId}`),
+      fetch(`${pokeApiBaseUrl}${pokemonNameOrId}`),
+    ]);
+
+    // Parse responses as JSON
+    const fccData = await fccRes.json();
+    const pokeData = await pokeRes.json();
+
+    // Display the data
+    displayPokemon(fccData, pokeData);
   } catch (err) {
     resetPage();
     alert("Pokémon not found");
@@ -35,52 +43,48 @@ const fetchPokemon = async () => {
 
 // fetchPokemon();
 
-const displayPokemon = (data) => {
+// Functionality to display the Pokémon details
+const displayPokemon = (fccData, pokeData) => {
   // Setting Pokémon details
-  pokemonName.textContent = `${data.name}`;
-  pokemonId.textContent = `#${data.id}`;
-  weight.textContent = `${data.weight}`;
-  height.textContent = `${data.height}`;
+  pokemonName.textContent = `${fccData.name}`;
+  pokemonId.textContent = `#${fccData.id}`;
+  weight.textContent = `${fccData.weight}`;
+  height.textContent = `${fccData.height}`;
+
+  //   Setting the official artwork image
+  pokemonImg.src = pokeData.sprites.other["official-artwork"].front_default;
+  pokemonImg.alt = `${pokeData.name} official artwork image`;
 
   // Setting the pokémon types
-  types.innerHTML = data.types
+  types.innerHTML = fccData.types
     .map((obj) => `<span class="type ${obj.type.name}">${obj.type.name}</span>`)
     .join("");
 
   //  Setting the pokémon stats
-  hp.textContent = data.stats[0].base_stat;
-  attack.textContent = data.stats[1].base_stat;
-  defense.textContent = data.stats[2].base_stat;
-  specialAttack.textContent = data.stats[3].base_stat;
-  specialDefense.textContent = data.stats[4].base_stat;
-  speed.textContent = data.stats[5].base_stat;
+  hp.textContent = fccData.stats[0].base_stat;
+  attack.textContent = fccData.stats[1].base_stat;
+  defense.textContent = fccData.stats[2].base_stat;
+  specialAttack.textContent = fccData.stats[3].base_stat;
+  specialDefense.textContent = fccData.stats[4].base_stat;
+  speed.textContent = fccData.stats[5].base_stat;
 };
-
-// Functionality to fetch official artwork from PokeAPI
-const fetchOfficialArtwork = async (pokemonNameOrId) => {
-  try {
-    const res = await fetch(`${pokeApiBaseUrl}${pokemonNameOrId}`);
-    const data = await res.json();
-
-    // Setting the official artwork image
-    pokemonImg.src = data.sprites.other["official-artwork"].front_default;
-    pokemonImg.alt = `${data.name} official artwork`;
-  } catch (err) {
-    console.log(`Error fetching official artwork: ${err}`);
-    alert("Failed to fetch official artwork image");
-  }
-};
-
-// fetchOfficialArtwork("bulbasaur");
 
 // Functionality to reset the page display
 const resetPage = async () => {
   try {
-    // Fetch Bulbasaur's data
-    const res = await fetch(`${fccProxyApi}1`);
-    const data = await res.json();
-    displayPokemon(data);
-    fetchOfficialArtwork(1);
+    // Fetch Bulbasaur's data from both APIs simultaneously
+    const [fccRes, pokeRes] = await Promise.all([
+      fetch(`${fccProxyApi}1`),
+      fetch(`${pokeApiBaseUrl}1`),
+    ]);
+
+    // Parse responses as JSON
+    const fccData = await fccRes.json();
+    const pokeData = await pokeRes.json();
+
+    // Display the data
+    displayPokemon(fccData, pokeData);
+    searchInput.value = "";
   } catch (err) {
     console.log(`Error fetching Bulbasaur data: ${err}`);
     alert("Failed to reset to Bulbasaur");
