@@ -52,7 +52,9 @@ searchInput.addEventListener("input", () => {
 
       suggestionItem.addEventListener("click", () => {
         searchInput.value = pokemon.name;
+        // searchInput.focus();
         outerSuggestionContainer.style.display = "none";
+        fetchPokemon();
       });
       autocompleteList.appendChild(suggestionItem);
     });
