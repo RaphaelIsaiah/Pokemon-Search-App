@@ -311,12 +311,15 @@ tr:not(:last-child) {
   border-bottom: 1px dotted var(--color-3);
 }
 
+th {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 td,
 th {
   /* background-color: var(--color-3); */
-  /* color: var(--color-2); */
   padding: 0.5rem;
-  /* align-content: baseline; */
 }
 
 .num {
