@@ -173,6 +173,7 @@ h3 {
   max-height: min-content;
   border-radius: 1rem;
   overflow: hidden;
+  margin-top: -1rem;
 }
 
 .suggestions-container {

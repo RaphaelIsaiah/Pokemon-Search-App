@@ -31,6 +31,11 @@ fetch(`${pokeApiBaseUrl}?limit=1118`)
     }));
   });
 
+// Utility function to check if the user is on a mobile device
+const isMobileDevice = () => {
+  return /Mobi|Android/i.test(navigator.userAgent);
+};
+
 //  Listen for User's input
 searchInput.addEventListener("input", () => {
   const inputValue = searchInput.value.toLowerCase();
@@ -52,7 +57,11 @@ searchInput.addEventListener("input", () => {
 
       suggestionItem.addEventListener("click", () => {
         searchInput.value = pokemon.name;
-        // searchInput.focus();
+        if (!isMobileDevice()) {
+          // Keep focus on the input field for non mobile devices
+          searchInput.focus();
+        }
+        autocompleteList.innerHTML = "";
         outerSuggestionContainer.style.display = "none";
         fetchPokemon();
       });
@@ -94,8 +103,6 @@ const fetchPokemon = async () => {
   }
 };
 
-// fetchPokemon();
-
 // Functionality to display the Pokémon details
 const displayPokemon = (fccData, pokeData) => {
   // Setting Pokémon details
@@ -104,7 +111,7 @@ const displayPokemon = (fccData, pokeData) => {
   weight.textContent = `${fccData.weight}`;
   height.textContent = `${fccData.height}`;
 
-  //   Setting the official artwork image
+  // Setting the official artwork image
   pokemonImg.src = pokeData.sprites.other["official-artwork"].front_default;
   pokemonImg.alt = `${pokeData.name} official artwork image`;
 
@@ -113,7 +120,7 @@ const displayPokemon = (fccData, pokeData) => {
     .map((obj) => `<span class="type ${obj.type.name}">${obj.type.name}</span>`)
     .join("");
 
-  //  Setting the pokémon stats
+  // Setting the pokémon stats
   hp.textContent = fccData.stats[0].base_stat;
   attack.textContent = fccData.stats[1].base_stat;
   defense.textContent = fccData.stats[2].base_stat;
