@@ -351,9 +351,14 @@ img {
   width: 100%;
 }
 
-tr:not(:last-child) {
+tr:not(:last-child), thead {
   /* background-color: rgb(113, 50, 113); */
   border-bottom: 1px dotted var(--color-3);
+}
+
+thead {
+  /* background-color: #abaabb; */
+  word-break: break-word;
 }
 
 th {

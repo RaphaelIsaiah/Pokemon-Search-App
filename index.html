@@ -3,6 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Discover comprehensive details about your favorite Pokémon! Search by name or ID, view stats, types, and official artwork images. A freeCodeCamp project to enhance your Pokémon knowledge!"
+    />
+    <meta property="og:title" content="Pokémon Search App" />
+    <meta
+      property="og:description"
+      content="Discover comprehensive details about your favorite Pokémon! Search by name or ID, view stats, types, and official artwork images. A freeCodeCamp project to enhance your Pokémon knowledge!"
+    />
+    <meta
+      property="og:image"
+      content="https://i.postimg.cc/JzdhhQj1/Pok-ball.jpg"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://raphaelisaiah.github.io/Pokemon-Search-App/"
+    />
     <title>Pokémon Search App</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -33,33 +51,48 @@
 
     <main>
       <!-- Search Section -->
-      <form id="search-form" class="search-container container-fluid">
-        <div class="search-box">
-          <label for="search-input" class="icon-label">
-            <span class="material-symbols-outlined search-icon"> search </span>
-          </label>
+      <section class="search-section">
+        <form id="search-form" class="search-container container-fluid">
+          <div class="search-box">
+            <label for="search-input" class="icon-label">
+              <span
+                class="material-symbols-outlined search-icon"
+                aria-label="Search icon"
+              >
+                search
+              </span>
+            </label>
 
-          <input
-            type="text"
-            id="search-input"
-            class="search"
-            placeholder="Search for a Pokémon..."
-            required
-          />
-        </div>
+            <input
+              type="text"
+              id="search-input"
+              class="search"
+              placeholder="Search for a Pokémon..."
+              aria-label="Search for a Pokémon"
+              required
+            />
+          </div>
 
-        <div id="outer-suggestion-container" class="outer-sug-container">
-          <div id="autocomplete-list" class="suggestions-container"></div>
-        </div>
+          <div id="outer-suggestion-container" class="outer-sug-container">
+            <div id="autocomplete-list" class="suggestions-container"></div>
+          </div>
 
-        <div class="btn-case">
-          <button id="search-button" class="search-button">Search</button>
-        </div>
-      </form>
-
+          <div class="btn-case">
+            <button
+              id="search-button"
+              class="search-button"
+              aria-label="Search button"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </section>
       <!-- Pokemon Image and Details -->
-      <div class="container-fluid card_section">
-        <div class="flex-container"><img id="pokemon-img" src="" alt="" /></div>
+      <section class="container-fluid card_section">
+        <figure class="flex-container">
+          <img id="pokemon-img" src="" alt="" />
+        </figure>
 
         <!-- Pokemon details -->
         <div class="pokemon-details">
@@ -75,16 +108,18 @@
           </div>
           <div class="types" id="types"></div>
         </div>
-      </div>
+      </section>
 
       <!-- Pokemon stats -->
-      <div class="container-fluid col-md-9 stats">
+      <section class="container-fluid col-md-9 stats">
         <table class="stats-table">
-          <tbody>
+          <thead>
             <tr>
               <th>Base</th>
               <th>Stat</th>
             </tr>
+          </thead>
+          <tbody>
             <tr>
               <td>HP</td>
               <td class="num" id="hp"></td>
@@ -111,7 +146,7 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </section>
     </main>
 
     <script
