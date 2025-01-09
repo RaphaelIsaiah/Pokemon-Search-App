@@ -1,9 +1,10 @@
 :root {
-  /* font families */
+  /* Font families */
   --font-1: "Lora", serif;
   --font-2: "Chakra Petch", serif;
   --font-3: "Oleo Script", serif;
-  /* colors */
+
+  /* Colors */
   --color-1: #b68d40;
   --color-2: #f4ebd0;
   --color-3: #122620;
@@ -24,30 +25,26 @@
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 html {
-  box-sizing: border-box;
   scroll-behavior: smooth;
   font-size: 62.5%;
 }
 
-/* 1200px / 16px = 75em */
 @media (max-width: 75em) {
   html {
     font-size: 60%;
   }
 }
 
-/* 980px / 16px = 61.25em */
 @media (max-width: 61.25em) {
   html {
     font-size: 55%;
   }
 }
 
-/* 460px / 16px = 28.75em */
 @media (max-width: 28.75em) {
   html {
     font-size: 55%;
@@ -92,15 +89,12 @@ h3 {
 .search-container {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
   gap: 2rem;
   margin: 0 auto 2rem;
   padding: 1rem;
   width: 90%;
   text-align: center;
-  /* background-color: blueviolet; */
 }
 
 .search-box {
@@ -110,7 +104,6 @@ h3 {
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
   border-radius: 1rem;
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 1rem;
   box-shadow: 0px 4px 8px var(--color-3);
@@ -120,7 +113,6 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: tomato ; */
 }
 
 .search-icon {
@@ -139,7 +131,6 @@ h3 {
 }
 
 .btn-case {
-  /* background-color: darkmagenta; */
   width: 70%;
 }
 
@@ -147,7 +138,6 @@ h3 {
   padding: 1rem;
   width: 100%;
   max-width: 100px;
-  min-width: min-content;
   font-size: 1.5rem;
   border: none;
   border-radius: 1rem;
@@ -163,6 +153,11 @@ h3 {
   color: var(--color-2);
 }
 
+.search-button:focus {
+  outline: 0.3rem outset var(--color-1);
+}
+
+/* Suggestion container */
 .outer-sug-container {
   display: none;
   background: linear-gradient(60deg, var(--color-4) 20%, var(--color-2) 100%);
@@ -177,7 +172,6 @@ h3 {
 }
 
 .suggestions-container {
-  /* background-color: var(--color-2); */
   height: 100%;
   overflow-y: scroll;
   text-align: left;
@@ -185,7 +179,6 @@ h3 {
   scrollbar-color: var(--color-3) var(--color-4);
 }
 
-/* Webkit-based browsers (Chrome, Safari, Edge) */
 .suggestions-container::-webkit-scrollbar {
   width: 0.7rem;
 }
@@ -204,7 +197,6 @@ h3 {
 }
 
 .autocomplete-suggestion:hover {
-  /* background-color: var(--color-2); */
   background: linear-gradient(-60deg, var(--color-4) 20%, var(--color-2) 100%);
 }
 
@@ -260,87 +252,67 @@ img {
 }
 
 /* Special styling for Pokémon types */
-
 .normal {
   background-color: #b7b7aa;
 }
-
 .fire {
   background-color: #ff6f52;
 }
-
 .water {
   background-color: #42a1ff;
 }
-
 .electric {
   background-color: #fecc33;
 }
-
 .grass {
   background-color: #78cc55;
 }
-
 .ice {
   background-color: #66ccfe;
 }
-
 .fighting {
   background-color: #d3887e;
 }
-
 .poison {
   background-color: #c68bb7;
 }
-
 .ground {
   background-color: #dfba52;
 }
-
 .flying {
   background-color: #8899ff;
 }
-
 .psychic {
   background-color: #ff66a3;
 }
-
 .bug {
   background-color: #aabb23;
 }
-
 .rock {
   background-color: #baaa66;
 }
-
 .ghost {
   background-color: #9995d0;
 }
-
 .dragon {
   background-color: #9e93f1;
 }
-
 .dark {
   background-color: #b59682;
 }
-
 .steel {
   background-color: #abaabb;
 }
-
 .fairy {
   background-color: #ed99ed;
 }
 
 .pokemon-details {
   padding: 0.6rem;
-  /* background-color: darkgray; */
 }
 
 /* Pokemon stats section */
 .stats {
-  /* background-color: aqua; */
   margin-top: 1rem;
   padding: 1rem;
   line-height: 1.5;
@@ -351,13 +323,12 @@ img {
   width: 100%;
 }
 
-tr:not(:last-child), thead {
-  /* background-color: rgb(113, 50, 113); */
+tr:not(:last-child),
+thead {
   border-bottom: 1px dotted var(--color-3);
 }
 
 thead {
-  /* background-color: #abaabb; */
   word-break: break-word;
 }
 
@@ -368,7 +339,6 @@ th {
 
 td,
 th {
-  /* background-color: var(--color-3); */
   padding: 0.5rem;
 }
 
