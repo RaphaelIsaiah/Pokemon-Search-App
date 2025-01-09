@@ -22,24 +22,28 @@ const pokeApiBaseUrl = "https://pokeapi.co/api/v2/pokemon/";
 let pokemonList = [];
 
 // Fetch Pokemon Names and IDs once
-fetch(`${pokeApiBaseUrl}?limit=1118`)
-  .then((res) => res.json())
-  .then((data) => {
+const fetchPokemonList = async () => {
+  try {
+    const res = await fetch(`${pokeApiBaseUrl}?limit=1118`);
+    const data = await res.json();
     pokemonList = data.results.map((pokemon, index) => ({
       name: pokemon.name,
       id: index + 1,
     }));
-  });
-
-// Utility function to check if the user is on a mobile device
-const isMobileDevice = () => {
-  return /Mobi|Android/i.test(navigator.userAgent);
+  } catch (error) {
+    console.error("Error fetching Pokémon list:", error);
+  }
 };
 
-//  Listen for User's input
-searchInput.addEventListener("input", () => {
+fetchPokemonList();
+
+// Utility function to check if the user is on a mobile device
+const isMobileDevice = () => /Mobi|Android/i.test(navigator.userAgent);
+
+// Handle user input for autocomplete.
+const handleUserInput = () => {
   const inputValue = searchInput.value.toLowerCase();
-  autocompleteList.innerHTML = "";
+  autocompleteList.innerHTML = ""; // Clear previous suggestions
 
   if (inputValue) {
     const filteredList = pokemonList.filter(
@@ -50,25 +54,27 @@ searchInput.addEventListener("input", () => {
 
     filteredList.forEach((pokemon) => {
       const suggestionItem = document.createElement("div");
-      outerSuggestionContainer.style.display = "block";
-      autocompleteList.style.display = "block";
       suggestionItem.classList.add("autocomplete-suggestion");
       suggestionItem.textContent = `${pokemon.name} (#${pokemon.id})`;
 
       suggestionItem.addEventListener("click", () => {
         searchInput.value = pokemon.name;
         if (!isMobileDevice()) {
-          // Keep focus on the input field for non mobile devices
-          searchInput.focus();
+          searchInput.focus(); // Keep focus on the input field only for non-mobile devices.
         }
-        autocompleteList.innerHTML = "";
-        outerSuggestionContainer.style.display = "none";
-        fetchPokemon();
+        autocompleteList.innerHTML = ""; // Clear suggestions
+        fetchPokemon(); // Fetch and display the selected Pokémon's data
       });
+
       autocompleteList.appendChild(suggestionItem);
     });
+
+    outerSuggestionContainer.style.display = "block";
+    autocompleteList.style.display = "block";
   }
-});
+};
+
+searchInput.addEventListener("input", handleUserInput);
 
 // Hide suggestions when clicking outside
 document.addEventListener("click", (e) => {
@@ -81,20 +87,16 @@ document.addEventListener("click", (e) => {
 // Async function to fetch data from the APIs
 const fetchPokemon = async () => {
   try {
-    // To enable search by either name or id
     const pokemonNameOrId = searchInput.value.toLowerCase();
 
-    // Fetch data from both APIs simultaneously
     const [fccRes, pokeRes] = await Promise.all([
       fetch(`${fccProxyApi}${pokemonNameOrId}`),
       fetch(`${pokeApiBaseUrl}${pokemonNameOrId}`),
     ]);
 
-    // Parse responses as JSON
     const fccData = await fccRes.json();
     const pokeData = await pokeRes.json();
 
-    // Display the data
     displayPokemon(fccData, pokeData);
   } catch (err) {
     resetPage();
@@ -105,22 +107,17 @@ const fetchPokemon = async () => {
 
 // Functionality to display the Pokémon details
 const displayPokemon = (fccData, pokeData) => {
-  // Setting Pokémon details
   pokemonName.textContent = `${fccData.name}`;
   pokemonId.textContent = `#${fccData.id}`;
   weight.textContent = `${fccData.weight}`;
   height.textContent = `${fccData.height}`;
-
-  // Setting the official artwork image
   pokemonImg.src = pokeData.sprites.other["official-artwork"].front_default;
   pokemonImg.alt = `${pokeData.name} official artwork image`;
 
-  // Setting the pokémon types
   types.innerHTML = fccData.types
     .map((obj) => `<span class="type ${obj.type.name}">${obj.type.name}</span>`)
     .join("");
 
-  // Setting the pokémon stats
   hp.textContent = fccData.stats[0].base_stat;
   attack.textContent = fccData.stats[1].base_stat;
   defense.textContent = fccData.stats[2].base_stat;
@@ -132,17 +129,14 @@ const displayPokemon = (fccData, pokeData) => {
 // Functionality to reset the page display
 const resetPage = async () => {
   try {
-    // Fetch Bulbasaur's data from both APIs simultaneously
     const [fccRes, pokeRes] = await Promise.all([
       fetch(`${fccProxyApi}1`),
       fetch(`${pokeApiBaseUrl}1`),
     ]);
 
-    // Parse responses as JSON
     const fccData = await fccRes.json();
     const pokeData = await pokeRes.json();
 
-    // Display the data
     displayPokemon(fccData, pokeData);
     searchInput.value = "";
     autocompleteList.style.display = "none";
@@ -152,10 +146,8 @@ const resetPage = async () => {
   }
 };
 
-// Resets the page on initial loading
 resetPage();
 
-// Event listener for the form submission
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
   fetchPokemon();
